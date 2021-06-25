@@ -27,9 +27,16 @@
   right: 0%;
 }
 
+.cardContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .cards {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  width: 80%;
 }
 
 .secondHeader {
