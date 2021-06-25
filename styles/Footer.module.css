@@ -1,0 +1,12 @@
+.container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    background-color: #000;
+    color: #fff;
+}
+
+.para {
+    margin: 1vw;
+}
