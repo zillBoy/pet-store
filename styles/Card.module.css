@@ -16,7 +16,7 @@
 }
 
 .title {
-    
+    text-transform: capitalize;
 }
 
 .description {

@@ -2,9 +2,9 @@ import React from 'react'
 import Image from 'next/image'
 import classes from '../../styles/Card.module.css'
 
-const Card = ({ image, alt, title, description }) => {
+const Card = ({ image, alt, title, description, onClick }) => {
     return (
-        <div className={classes.container}>
+        <div onClick={onClick} className={classes.container}>
             <div className={classes.image}>
                 <Image src={image} width={307} height={247} alt={alt} objectFit='cover' />
             </div>

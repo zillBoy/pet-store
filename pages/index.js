@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import { useRouter } from 'next/router'
 import { colors } from '../constants/colors/colors'
 import classes from '../styles/Home.module.css'
 import Image from 'next/image'
@@ -7,6 +8,15 @@ import firebase from '../firebase'
 
 const HomePage = ({ pets }) => {
   
+  const router = useRouter()
+
+  const changeRouteHandler = pet => {
+    router.push({
+      pathname: '/pets/[petType]',
+      query: { petType: pet.type },
+    })
+  }
+
   return (
     <>
       <div style={{ backgroundColor: colors.orange }} className={classes.container} />
@@ -19,17 +29,17 @@ const HomePage = ({ pets }) => {
         <h2 className={classes.secondHeader}>Featured Pets</h2>
         <div className={classes.cardContainer}>
           <div className={classes.cards}>
-            {pets.map((pet, index) => {
+            {pets.map(pet => {
               return (
-                <>
+                <Fragment key={pet.id}>
                   <Card
-                    key={pet.id}
+                    onClick={() => changeRouteHandler(pet)}
                     image={pet.image}
                     alt={pet.description}
-                    title={pet.title}
+                    title={pet.type}
                     description={pet.description}
                   />
-                </>
+                </Fragment>
               )
             })}
           </div>
@@ -40,7 +50,7 @@ const HomePage = ({ pets }) => {
 }
 
 export const getStaticProps = async () => {
-  const petsResponse = await firebase.firestore().collection('pets')
+  const petsResponse = await firebase.firestore().collection('pets').where('featured', '==', true)
   const petsData = await petsResponse.get()
   
   let pets = []
@@ -48,16 +58,9 @@ export const getStaticProps = async () => {
     pets.push(pet.data())
   })
 
-  const filteredPets = pets.filter((pet, index, self) => {
-    if (!self.includes(pet.type)) {
-      self.push(pet.type)
-      return true
-    }
-  })
-
   return {
     props: {
-      pets: filteredPets
+      pets
     }
   }
 }
